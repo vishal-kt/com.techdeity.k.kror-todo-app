@@ -1,25 +1,78 @@
 package com.techdeity.k.plugins
 
+import com.techdeity.k.data.model.Activity
+import com.techdeity.k.data.model.activityStorage
 import com.techdeity.k.routes.randomRabbit
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.http.content.*
+import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Application.configureRouting() {
     routing {
+        get("/") {
+            call.respondText("Activities")
+        }
 
-        randomRabbit()
+        route("/activities") {
+            get {
+                takeIf { activityStorage.isNotEmpty() }?.let {
+                    call.respond(activityStorage)
+                } ?: call.respondText("No activies found", status = HttpStatusCode.OK)
+            }
 
+            get("{id?}") {
+                val id = call.parameters["id"] ?: return@get call.respondText(
+                    "Missing id", status = HttpStatusCode.BadRequest
+                )
 
-//        get("/") {
-//            call.respondText("Hello World!")
-        //}
-        // Static plugin. Try to access `/static/index.html`
+                val activity = activityStorage.find { it.id == id.toInt() } ?: return@get call.respondText(
+                    "No activity with id $id", status = HttpStatusCode.NotFound
+                )
 
+                call.respond(activity)
+            }
 
-        static("/static") {
-            resources("static")
+            post {
+                val activity = call.receive<Activity>()
+                activityStorage.add(activity.newEntry())
+                call.respondText("Activity stored correctly", status = HttpStatusCode.Created)
+            }
+
+            put("{id?}") {
+                val id = call.parameters["id"] ?: return@put call.respond(HttpStatusCode.BadRequest)
+                val activity = call.receive<Activity>()
+
+                activityStorage.find { it.id == id.toInt() } ?: return@put call.respondText(
+                    "No activity with id $id", status = HttpStatusCode.NotFound
+                )
+
+                activityStorage.replaceAll {
+                    it.copy(
+                        title = activity.title,
+                        description = activity.description,
+                        status = activity.status
+                    )
+                }
+
+                call.respondText("Activity updated correctly", status = HttpStatusCode.OK)
+            }
+
+            delete("{id?}") {
+                val id = call.parameters["id"] ?: return@delete call.respond(HttpStatusCode.BadRequest)
+
+                if (activityStorage.removeIf { it.id == id.toInt() }) {
+                    call.respondText(
+                        "Activity removed correctly", status = HttpStatusCode.Accepted
+                    )
+                } else {
+                    (call.respondText("Not Found", status = HttpStatusCode.NotFound))
+                }
+
+            }
         }
     }
 }
+
