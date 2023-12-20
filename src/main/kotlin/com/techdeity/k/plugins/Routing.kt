@@ -1,16 +1,35 @@
 package com.techdeity.k.plugins
 
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.plugins.cors.*
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpMethod
 import com.techdeity.k.data.model.Activity
 import com.techdeity.k.data.model.activityStorage
-import com.techdeity.k.routes.randomRabbit
+import io.ktor.server.application.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.http.content.*
+import io.ktor.server.plugins.cors.CORS
+import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Application.configureRouting() {
+    install(CORS) {
+//        method(HttpMethod.Options)
+//        method(HttpMethod.Put)
+//        method(HttpMethod.Delete)
+//        method(HttpMethod.Patch)
+//        header(HttpHeaders.Authorization)
+//        header(HttpHeaders.ContentType)
+//        header(HttpHeaders.AccessControlAllowOrigin)
+//        header(HttpHeaders.AccessControlAllowHeaders)
+//        header(HttpHeaders.AccessControlAllowMethods)
+        allowCredentials = true
+        anyHost()
+    }
     routing {
         get("/") {
             call.respondText("Activities")
@@ -73,6 +92,9 @@ fun Application.configureRouting() {
 
             }
         }
+
+
+
     }
 }
 

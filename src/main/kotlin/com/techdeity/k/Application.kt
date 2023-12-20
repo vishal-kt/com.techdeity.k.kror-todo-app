@@ -9,10 +9,15 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.Json.Default.decodeFromJsonElement
 import kotlinx.serialization.json.Json.Default.encodeToString
 
+
+
 @Serializable
 data class Player(val name:String,val level:Int)
 fun main(args: Array<String>) {
  io.ktor.server.netty.EngineMain.main(args)
+
+
+
 
 //    val player  = Player("vishal",66)
 //    val j2s = Json.encodeToString(player)
@@ -28,4 +33,8 @@ fun Application.module() {
     configureMonitoring()
     configureHTTP()
     configureRouting()
+
+
 }
+
+

@@ -24,6 +24,28 @@ repositories {
 }
 
 dependencies {
+
+    implementation("io.ktor:ktor-server-netty:1.6.4")
+    implementation("io.ktor:ktor-server-cors:$ktor_version")
+
+    implementation("io.ktor:ktor-server-core:1.6.4")
+    implementation("io.ktor:ktor-server-host-common:1.6.4")
+    implementation("io.ktor:ktor-jackson:1.6.4")
+    implementation("io.ktor:ktor-serialization:1.6.4")
+    implementation("io.ktor:ktor-features:1.6.4")
+    implementation("io.ktor:ktor-html-builder:1.6.4")
+    implementation("io.ktor:ktor-http-cio:1.6.4")
+    implementation("io.ktor:ktor-http-jvm:1.6.4")
+    implementation("io.ktor:ktor-jackson:1.6.4")
+    implementation("io.ktor:ktor-client-jetty:1.6.4")
+    implementation("io.ktor:ktor-client-cio:1.6.4")
+    implementation("io.ktor:ktor-client-serialization:1.6.4")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.5.31")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
+    implementation("io.ktor:ktor-client-auth-jvm:1.6.4")
+    implementation("io.ktor:ktor-client-json-jvm:1.6.4")
+
+
     implementation("io.ktor:ktor-server-content-negotiation-jvm")
     implementation("io.ktor:ktor-server-core-jvm")
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
@@ -35,4 +57,6 @@ dependencies {
     implementation("io.ktor:ktor-server-config-yaml:2.3.7")
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+
+
 }
